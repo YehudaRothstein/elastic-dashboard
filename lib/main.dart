@@ -223,7 +223,7 @@ class _ElasticState extends State<Elastic> {
     );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: appTitle,
+      title: "ExcaliDashboard",
       theme: theme,
       home: DashboardPage(
         ntConnection: widget.ntConnection,

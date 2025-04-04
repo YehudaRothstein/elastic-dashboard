@@ -293,7 +293,7 @@ class EditableTabBar extends StatelessWidget {
                   visible: preferences.getBool(PrefKeys.showGrid) ??
                       Defaults.showGrid,
                   child: GridPaper(
-                    color: const Color.fromARGB(50, 195, 232, 243),
+                    color: const Color.fromARGB(1, 34, 101, 243),
                     interval: (preferences.getInt(PrefKeys.gridSize) ??
                             Defaults.gridSize)
                         .toDouble(),

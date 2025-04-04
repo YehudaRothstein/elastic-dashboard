@@ -12,13 +12,15 @@ class CommandModel extends MultiTopicNTWidgetModel {
   String type = CommandWidget.widgetType;
 
   String get runningTopicName => '$topic/running';
+
   String get nameTopicName => '$topic/name';
 
   late NT4Subscription runningSubscription;
   late NT4Subscription nameSubscription;
 
   @override
-  List<NT4Subscription> get subscriptions => [
+  List<NT4Subscription> get subscriptions =>
+      [
         runningSubscription,
         nameSubscription,
       ];
@@ -41,7 +43,8 @@ class CommandModel extends MultiTopicNTWidgetModel {
     bool showType = true,
     super.dataType,
     super.period,
-  })  : _showType = showType,
+  })
+      : _showType = showType,
         super();
 
   CommandModel.fromJson({
@@ -116,56 +119,61 @@ class CommandWidget extends NTWidget {
               }),
         ),
         const SizedBox(height: 10),
-        GestureDetector(
-          onTapUp: (_) {
-            bool publishTopic = model.runningTopic == null;
+        Flexible( // Ensure button takes only 1 cell and not 2
+          flex: 1, // Adjust this value if you want it to take more/less space
+          child: GestureDetector(
+            onTapUp: (_) {
+              bool publishTopic = model.runningTopic == null;
 
-            model.runningTopic ??=
-                model.ntConnection.getTopicFromName(model.runningTopicName);
+              model.runningTopic ??=
+                  model.ntConnection.getTopicFromName(model.runningTopicName);
 
-            if (model.runningTopic == null) {
-              return;
-            }
+              if (model.runningTopic == null) {
+                return;
+              }
 
-            if (publishTopic) {
-              model.ntConnection.publishTopic(model.runningTopic!);
-            }
+              if (publishTopic) {
+                model.ntConnection.publishTopic(model.runningTopic!);
+              }
 
-            // Prevents widget from locking up if double pressed fast enough
-            bool running =
-                model.runningSubscription.value?.tryCast<bool>() ?? false;
+              // Prevents widget from locking up if double pressed fast enough
+              bool running = model.runningSubscription.value?.tryCast<bool>() ??
+                  false;
 
-            model.ntConnection
-                .updateDataFromTopic(model.runningTopic!, !running);
-          },
-          child: ValueListenableBuilder(
-              valueListenable: model.runningSubscription,
-              builder: (context, data, child) {
-                bool running = tryCast(data) ?? false;
+              model.ntConnection.updateDataFromTopic(
+                  model.runningTopic!, !running);
+            },
+            child: ValueListenableBuilder(
+                valueListenable: model.runningSubscription,
+                builder: (context, data, child) {
+                  bool running = tryCast(data) ?? false;
 
-                return AnimatedContainer(
-                  duration: const Duration(milliseconds: 50),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0, vertical: 4.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    boxShadow: const [
-                      BoxShadow(
-                        offset: Offset(2, 2),
-                        blurRadius: 10.0,
-                        spreadRadius: -5,
-                        color: Colors.black,
-                      ),
-                    ],
-                    color: (running)
-                        ? theme.colorScheme.primaryContainer
-                        : const Color.fromARGB(255, 50, 50, 50),
-                  ),
-                  child: Text(buttonText,
-                      style: theme.textTheme.bodyLarge,
-                      overflow: TextOverflow.ellipsis),
-                );
-              }),
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 50),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 4.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: const [
+                        BoxShadow(
+                          offset: Offset(2, 2),
+                          blurRadius: 10.0,
+                          spreadRadius: -5,
+                          color: Colors.black,
+                        ),
+                      ],
+                      color: (running)
+                          ? theme.colorScheme.primaryContainer
+                          : const Color.fromARGB(255, 50, 50, 50),
+                    ),
+                    child: Center(
+                      child: Text(buttonText,
+                          style: theme.textTheme.bodyLarge,
+                          overflow: TextOverflow.ellipsis),
+                    ),
+                  );
+                }),
+          ),
         ),
       ],
     );

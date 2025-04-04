@@ -78,7 +78,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     ],
   );
 
-  late final Widget title = LayoutBuilder(
+  late final Widget
+  title = LayoutBuilder(
     builder: (context, constraints) => (constraints.maxWidth >= titleSize!)
         ? Text(
             titleText,

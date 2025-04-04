@@ -60,7 +60,7 @@ class BooleanBoxModel extends SingleTopicNTWidgetModel {
     required super.preferences,
     required super.topic,
     Color trueColor = Colors.green,
-    Color falseColor = Colors.red,
+    Color falseColor = Colors.blue,
     String trueIcon = 'None',
     String falseIcon = 'None',
     super.dataType,

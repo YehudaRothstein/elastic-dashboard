@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:dot_cast/dot_cast.dart';
 import 'package:provider/provider.dart';
-
 import 'package:elastic_dashboard/widgets/nt_widgets/nt_widget.dart';
 
 class ToggleButton extends NTWidget {
@@ -18,11 +16,14 @@ class ToggleButton extends NTWidget {
         valueListenable: model.subscription!,
         builder: (context, data, child) {
           bool value = tryCast(data) ?? false;
-
           String buttonText =
               model.topic.substring(model.topic.lastIndexOf('/') + 1);
 
-          Size buttonSize = MediaQuery.of(context).size;
+          Size screenSize = MediaQuery.of(context).size;
+
+          // Adjusted button size
+          double buttonWidth = screenSize.width * 0.25;  // 25% of screen width
+          double buttonHeight = screenSize.height * 0.12; // 12% of screen height
 
           ThemeData theme = Theme.of(context);
 
@@ -45,20 +46,20 @@ class ToggleButton extends NTWidget {
             },
             child: Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: buttonSize.width * 0.01,
-                  vertical: buttonSize.height * 0.01),
+                  horizontal: screenSize.width * 0.02,
+                  vertical: screenSize.height * 0.02),
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 10),
-                width: buttonSize.width,
-                height: buttonSize.height,
+                duration: const Duration(milliseconds: 150),
+                width: buttonWidth,
+                height: buttonHeight,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(12.0),
                   boxShadow: const [
                     BoxShadow(
-                      offset: Offset(2, 2),
-                      blurRadius: 10.0,
-                      spreadRadius: -5,
-                      color: Colors.black,
+                      offset: Offset(3, 3),
+                      blurRadius: 12.0,
+                      spreadRadius: -4,
+                      color: Colors.black45,
                     ),
                   ],
                   color: (value)
@@ -69,7 +70,7 @@ class ToggleButton extends NTWidget {
                     child: Text(
                   buttonText,
                   textAlign: TextAlign.center,
-                  style: theme.textTheme.titleMedium,
+                  style: theme.textTheme.headlineSmall, // Slightly bigger text
                 )),
               ),
             ),
